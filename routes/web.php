@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Sample;
+use App\Http\Controllers\Sample\SampleController;
 use App\Http\Middleware\HelloMiddleware;
 use Illuminate\Support\Facades\Route;
 
@@ -21,4 +23,9 @@ Route::get('/', function () {
 Route::middleware([HelloMiddleware::class])->group(function () {
     Route::get('/hello', 'App\Http\Controllers\HelloController@index');
     Route::get('/hello/other', 'App\Http\Controllers\HelloController@other');
+});
+
+Route::namespace('Sample')->group(function() {
+    Route::get('/sample', [SampleController::class, 'index']);
+    Route::get('/sample/other', [SampleController::class, 'other']);
 });
