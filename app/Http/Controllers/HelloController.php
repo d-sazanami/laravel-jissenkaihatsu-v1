@@ -7,19 +7,24 @@ use App\Models\Person;
 
 class HelloController extends Controller
 {
-    public function index(Person $person)
+    function __construct()
     {
+        config(['sample.message' => '新しいメッセージ']);
+    }
+
+    public function index()
+    {
+        $sample_msg = env('SAMPLE_MESSAGE');
+        $sample_data = env('SAMPLE_DATA');
         $data = [
-            'msg' => $person,
+            'msg' => $sample_msg,
+            'data' => explode(',', $sample_data),
         ];
         return view('hello.index', $data);
     }
 
     public function other(Request $request)
     {
-        $data = [
-            'msg' => $request->bye,
-        ];
-        return view('hello.index', $data);
+        return redirect()->route('sample');
     }
 }
