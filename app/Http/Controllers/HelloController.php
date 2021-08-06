@@ -7,6 +7,11 @@ use App\Models\Person;
 
 class HelloController extends Controller
 {
+    function __construct()
+    {
+        config(['sample.message' => '新しいメッセージ']);
+    }
+
     public function index()
     {
         $sample_msg = config('sample.message');
