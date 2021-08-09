@@ -9,6 +9,7 @@
 </head>
 <body>
     <h1>Hello/Index</h1>
+    <p><a href="/hello/other">download</a></p>
     <p>{!!$msg!!}</p>
     <ul>
         @foreach ($data as $item)
