@@ -9,7 +9,11 @@
 </head>
 <body>
     <h1>Hello/Index</h1>
-    <p><a href="/hello/other">download</a></p>
+    <form action="/hello/other" method="POST" enctype="multipart/form-data">
+        @csrf
+        <input type="file" name="file">
+        <input type="submit">
+    </form>
     <p>{!!$msg!!}</p>
     <ul>
         @foreach ($data as $item)
