@@ -3,28 +3,35 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Person;
 
 class HelloController extends Controller
 {
+    private $fname;
+
     function __construct()
     {
-        config(['sample.message' => '新しいメッセージ']);
+        $this->fname = 'hello.txt';
     }
 
     public function index()
     {
-        $sample_msg = env('SAMPLE_MESSAGE');
-        $sample_data = env('SAMPLE_DATA');
+        $dir = '/';
+        $all = Storage::disk('logs')->allFiles($dir);
+
         $data = [
-            'msg' => $sample_msg,
-            'data' => explode(',', $sample_data),
+            'msg' => 'DIR:' . $dir,
+            'data' => $all
         ];
+
         return view('hello.index', $data);
     }
 
     public function other(Request $request)
     {
-        return redirect()->route('sample');
+        $ext = '.' . $request->file('file')->extension();
+        Storage::disk('public')->putFileAs('files', $request->file('file'), 'uploaded' . $ext);
+        return redirect()->route('hello');
     }
 }
