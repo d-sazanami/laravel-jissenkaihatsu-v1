@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Person;
 
@@ -15,14 +16,17 @@ class HelloController extends Controller
         $this->fname = 'hello.txt';
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $dir = '/';
-        $all = Storage::disk('logs')->allFiles($dir);
+        $msg = 'please input text:';
+
+        if ($request->isMethod('post'))
+        {
+            $msg = 'you typed: "' . $request->input('msg') . '"';
+        }
 
         $data = [
-            'msg' => 'DIR:' . $dir,
-            'data' => $all
+            'msg' => $msg
         ];
 
         return view('hello.index', $data);
