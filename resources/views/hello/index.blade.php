@@ -12,9 +12,9 @@
     <p>{!!$msg!!}</p>
     <form action="/hello" method="POST">
         @csrf
-        <div>NAME:<input type="text" name="name"></div>
-        <div>MAIL:<input type="text" name="mail"></div>
-        <div>TEL:<input type="text" name="tel"></div>
+        <div>NAME:<input type="text" name="name" value="{{old('name')}}"></div>
+        <div>MAIL:<input type="text" name="mail" value="{{old('mail')}}"></div>
+        <div>TEL:<input type="text" name="tel" value="{{old('tel')}}"></div>
         <input type="submit">
     </form>
     <hr>

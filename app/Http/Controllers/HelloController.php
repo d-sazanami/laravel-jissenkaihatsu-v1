@@ -24,15 +24,17 @@ class HelloController extends Controller
         $values = [];
         if ($request->isMethod('post'))
         {
-            $form = $request->only(['name', 'mail']);
+            $form = $request->only(['name', 'mail', 'tel']);
             $keys = array_keys($form);
             $values = array_values($form);
             $result = '<html><body>';
+            $msg = old('name') . ', ' . old('mail') . ', ' . old('tel');
             $data = [
-                'msg' => 'you inputted.',
+                'msg' => $msg,
                 'keys' => $keys,
                 'values' => $values
             ];
+            $request->flash();
             return view('hello.index', $data);
         }
 
@@ -42,6 +44,7 @@ class HelloController extends Controller
             'values' => $values
         ];
 
+        $request->flash();
         return view('hello.index', $data);
     }
 
