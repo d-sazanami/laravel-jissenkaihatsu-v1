@@ -9,8 +9,9 @@ use Illuminate\Http\Response;
 class HelloController extends Controller
 {
 
-    public function index(MyService $myService)
+    public function index()
     {
+        $myService = app('App\MyClasses\MyService');
         $data = [
             'msg' => $myService->say(),
             'data' => $myService->data()
