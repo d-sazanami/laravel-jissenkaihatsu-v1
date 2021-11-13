@@ -9,12 +9,12 @@ use Illuminate\Http\Response;
 class HelloController extends Controller
 {
 
-    public function index()
+    public function index(int $id = -1)
     {
-        $myService = app('App\MyClasses\MyService');
+        $myService = app()->makeWith('App\MyClasses\MyService', ['id' => $id]);
         $data = [
-            'msg' => $myService->say(),
-            'data' => $myService->data()
+            'msg' => $myService->say($id),
+            'data' => $myService->alldata()
         ];
 
         return view('hello.index', $data);
