@@ -9,6 +9,11 @@ use Illuminate\Http\Response;
 class HelloController extends Controller
 {
 
+    function __construct(MyService $myService)
+    {
+        $myService = app('App\MyClasses\MyService');
+    }
+
     public function index(MyService $myService, int $id = -1)
     {
         $myService->setId($id);
