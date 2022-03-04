@@ -19,6 +19,6 @@ Route::get('/', function () {
 });
 
 Route::get('/hello', 'App\Http\Controllers\HelloController@index')
-    ->middleware(\App\Http\Middleware\MyMiddleware::class);
+    ->middleware('MyMW');
 
 Route::get('/sample', 'App\Http\Controllers\Sample\SampleController@index')->name('sample');
