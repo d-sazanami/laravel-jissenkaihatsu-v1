@@ -9,11 +9,9 @@ class HelloController extends Controller
 
     public function index($id)
     {
-        $ids = explode(',', $id);
-        $msg = 'get people.';
+        $msg = 'show page: ' . $id;
         $result = DB::table('people')
-            ->whereIn('id', $ids)
-            ->get();
+            ->paginate(3, ['*'], 'page', $id);
 
         $data = [
             'msg' => $msg,
