@@ -12,10 +12,13 @@ class HelloController extends Controller
         $data = ['msg' => '', 'data' => []];
         $msg = 'get: ';
         $result = [];
-        DB::table('people')
-            ->chunkById(2, function($items) use (&$msg, &$result) {
-            $msg .= $items[0]->id . ' ';
-            $result += array_merge($result, [$items[0]]);
+        DB::table('people')->orderBy('name', 'asc')
+            ->chunk(2, function($items) use (&$msg, &$result) {
+                foreach ($items as $item) {
+                    $msg .= $item->id . ' ';
+                    $result += array_merge($result, [$item]);
+                    break;
+                }
             return true;
         }
     );
