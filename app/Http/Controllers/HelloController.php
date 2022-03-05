@@ -2,22 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Facades\MyService;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class HelloController extends Controller
 {
 
-    function __construct()
-    {
-    }
-
     public function index(Request $request)
     {
+        $result = DB::table('people')->get();
         $data = [
-            'msg' => $request->hello,
-            'data' => $request->alldata,
+            'msg' => 'Database access.',
+            'data' => $result,
         ];
 
         return view('hello.index', $data);
