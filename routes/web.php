@@ -18,7 +18,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/hello', 'App\Http\Controllers\HelloController@index')
-    ->middleware('MyMW');
+Route::get('/hello/{id?}', 'App\Http\Controllers\HelloController@index');
 
 Route::get('/sample', 'App\Http\Controllers\Sample\SampleController@index')->name('sample');
