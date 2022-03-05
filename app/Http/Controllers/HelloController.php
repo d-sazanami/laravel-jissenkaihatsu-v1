@@ -7,16 +7,12 @@ use Illuminate\Support\Facades\DB;
 class HelloController extends Controller
 {
 
-    public function index($id = -1)
+    public function index()
     {
-        if ($id >= 0) {
-            $msg = 'get name like "' . $id . '".';
-            $result = DB::table('people')
-                ->whereRaw('name like ?', ['%' . $id . '%'])->get();
-        } else {
-            $msg = 'get people records.';
-            $result = DB::table('people')->get();
-        }
+        $msg = 'get people records.';
+        $first = DB::table('people')->first();
+        $last = DB::table('people')->orderBy('id', 'desc')->first();
+        $result = [$first, $last];
         $data = [
             'msg' => $msg,
             'data' => $result,
