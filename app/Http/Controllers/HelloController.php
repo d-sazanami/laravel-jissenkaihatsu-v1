@@ -9,10 +9,16 @@ class HelloController extends Controller
 
     public function index($id = -1)
     {
-        $name = DB::table('people')->pluck('name');
-        $value = $name->toArray();
-        $msg = implode(', ', $value);
-        $result = DB::table('people')->get();
+        $data = ['msg' => '', 'data' => []];
+        $msg = 'get: ';
+        $result = [];
+        DB::table('people')
+            ->chunkById(2, function($items) use (&$msg, &$result) {
+            $msg .= $items[0]->id . ' ';
+            $result += array_merge($result, [$items[0]]);
+            return true;
+        }
+    );
 
         $data = [
             'msg' => $msg,
