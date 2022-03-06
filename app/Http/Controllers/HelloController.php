@@ -13,7 +13,7 @@ class HelloController extends Controller
         $id = $request->query('page');
         $msg = 'show page: ' . $id;
         $result = DB::table('people')
-            ->paginate(3, ['*'], 'page', $id);
+            ->simplePaginate(3);
 
         $data = [
             'msg' => $msg,

@@ -12,7 +12,7 @@
             <li>{{$item->name}} [{{$item->mail}}, {{$item->age}}]</li>
         @endforeach
     </ol>
-    {!! $data->links('vendor.pagination.bootstrap-4') !!}
+    {{ $data->links() }}
     <hr>
 </body>
 </html>
