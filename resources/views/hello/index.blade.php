@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Index</title>
+    <link href="/css/app.css" rel="stylesheet">
 </head>
 <body>
     <h1>Hello/Index</h1>
@@ -11,6 +12,7 @@
             <li>{{$item->name}} [{{$item->mail}}, {{$item->age}}]</li>
         @endforeach
     </ol>
+    {!! $data->links('vendor.pagination.bootstrap-4') !!}
     <hr>
 </body>
 </html>
