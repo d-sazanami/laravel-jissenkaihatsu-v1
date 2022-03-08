@@ -11,21 +11,16 @@ class HelloController extends Controller
     public function index(Request $request)
     {
         $msg = 'show people reord.';
-        $result = Person::get()->filter(function ($person)
+        $keys = Person::get()->modelKeys();
+        $even = array_filter($keys, function($key)
         {
-            return $person->age < 50;
-        }
-        );
-        $result2 = Person::get()->filter(function ($person)
-        {
-            return $person->age < 20;
-        }
-        );
-        $result3 = $result->diff($result2);
+            return $key % 2 == 0;
+        });
+        $result = Person::get()->only($even);
 
         $data = [
             'msg' => $msg,
-            'data' => $result2,
+            'data' => $result,
         ];
 
         return view('hello.index', $data);
