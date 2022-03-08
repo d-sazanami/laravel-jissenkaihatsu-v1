@@ -6,13 +6,17 @@
 </head>
 <body>
     <h1>Hello/Index</h1>
-    <p>{!!$msg!!}</p>
-    <ol>
+    <p>{{$msg}}</p>
+    <table border="1">
         @foreach ($data as $item)
-            <li>{{$item->name}} [{{$item->mail}}, {{$item->age}}]</li>
+        <tr>
+            <th>{{$item->id}}</th>
+            <td>{{$item->name}}</td>
+            <td>{{$item->mail}}</td>
+            <td>{{$item->age}}</td>
+        </tr>
         @endforeach
-    </ol>
-    {!! $paginator->link() !!}
+    </table>
     <hr>
 </body>
 </html>
