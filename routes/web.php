@@ -20,6 +20,8 @@ Route::get('/', function () {
 
 Route::get('/hello', 'App\Http\Controllers\HelloController@index')->name('hello');
 Route::get('/hello/other', 'App\Http\Controllers\HelloController@other');
+Route::get('/hello/json', 'App\Http\Controllers\HelloController@json');
+Route::get('/hello/json/{id}', 'App\Http\Controllers\HelloController@json');
 Route::get('/hello/{id?}/{name?}', 'App\Http\Controllers\HelloController@save');
 
 Route::get('/sample', 'App\Http\Controllers\Sample\SampleController@index')->name('sample');
