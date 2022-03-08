@@ -14,6 +14,12 @@ class Person extends Model
         'age' => 'integer'
     ];
 
+    public function setAllDataAttribute(Array $value)
+    {
+        $this->attributes['name'] = $value[0];
+        $this->attributes['mail'] = $value[1];
+        $this->attributes['age'] = $value[2];
+    }
 
     public function newCollection(array $models = [])
     {
