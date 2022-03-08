@@ -22,4 +22,13 @@ class HelloController extends Controller
         return view('hello.index', $data);
     }
 
+    public function save($id, $name)
+    {
+        $record = Person::find($id);
+        $record->name = $name;
+        $record->save();
+
+        return redirect()->route('hello');
+    }
+
 }

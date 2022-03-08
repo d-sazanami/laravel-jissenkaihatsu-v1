@@ -18,6 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/hello/{id?}', 'App\Http\Controllers\HelloController@index');
+Route::get('/hello', 'App\Http\Controllers\HelloController@index')->name('hello');
+Route::get('/hello/{id?}/{name?}', 'App\Http\Controllers\HelloController@save');
 
 Route::get('/sample', 'App\Http\Controllers\Sample\SampleController@index')->name('sample');
