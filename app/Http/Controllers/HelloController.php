@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Pagination\MyPaginator;
 use Illuminate\Http\Request;
 use App\Models\Person;
 
@@ -12,7 +11,12 @@ class HelloController extends Controller
     public function index(Request $request)
     {
         $msg = 'show people reord.';
-        $result = Person::get();
+        $result = Person::get()->reject(function ($person)
+        {
+            return $person->age < 20;
+        }
+
+        );
 
         $data = [
             'msg' => $msg,
