@@ -12,7 +12,8 @@ class HelloController extends Controller
     public function index(Person $person = null)
     {
         if ($person != null) {
-            MyJob::dispatch($person)->delay(now()->addMinute(5));
+            $qname = $person->id % 2 == 0 ? 'even' : 'odd';
+            MyJob::dispatch($person)->onQueue($qname);
         }
         $msg = 'show people reord.';
         $result = Person::get();
