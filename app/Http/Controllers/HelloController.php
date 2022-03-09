@@ -12,7 +12,7 @@ class HelloController extends Controller
     public function index(Person $person = null)
     {
         if ($person != null) {
-            MyJob::dispatch($person);
+            MyJob::dispatch($person)->delay(now()->addMinute(5));
         }
         $msg = 'show people reord.';
         $result = Person::get();
