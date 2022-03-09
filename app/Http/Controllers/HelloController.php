@@ -3,23 +3,36 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Person;
 
 class HelloController extends Controller
 {
 
-    public function index(Request $request)
+    public function index(Person $person = null)
     {
         $msg = 'show people reord.';
-        $re = Person::get();
-        $fields = Person::get()->fields();
+        $result = Person::get();
 
         $data = [
-            'msg' => implode(', ', $fields),
-            'data' => $re,
+            'input' => '',
+            'msg' => $msg,
+            'data' => $result,
         ];
 
         return view('hello.index', $data);
+    }
+
+    public function send(Request $request)
+    {
+        $id = $request->input('id');
+        $person = Person::find($id);
+
+        dispatch(function() use ($person)
+        {
+            Storage::append('person_access_log.txt', $person->name);
+        });
+        return redirect()->route('hello');
     }
 
     public function save($id, $name)
