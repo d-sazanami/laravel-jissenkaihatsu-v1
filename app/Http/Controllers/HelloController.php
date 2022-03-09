@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\MyJob;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Person;
 
 class HelloController extends Controller
@@ -11,10 +11,6 @@ class HelloController extends Controller
 
     public function index(Person $person = null)
     {
-        if ($person != null) {
-            $qname = $person->id % 2 == 0 ? 'even' : 'odd';
-            MyJob::dispatch($person)->onQueue($qname);
-        }
         $msg = 'show people reord.';
         $result = Person::get();
 
@@ -25,6 +21,18 @@ class HelloController extends Controller
         ];
 
         return view('hello.index', $data);
+    }
+
+    public function send(Request $request)
+    {
+        $id = $request->input('id');
+        $person = Person::find($id);
+
+        dispatch(function() use ($person)
+        {
+            Storage::append('person_access_log.txt', $person->name);
+        });
+        return redirect()->route('hello');
     }
 
     public function save($id, $name)
