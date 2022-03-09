@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\MyJob;
 use Illuminate\Http\Request;
 use App\Models\Person;
 
@@ -10,13 +11,14 @@ class HelloController extends Controller
 
     public function index(Request $request)
     {
+        MyJob::dispatch();
         $msg = 'show people reord.';
-        $re = Person::get();
-        $fields = Person::get()->fields();
+        $result = Person::get();
 
         $data = [
-            'msg' => implode(', ', $fields),
-            'data' => $re,
+            'input' => '',
+            'msg' => $msg,
+            'data' => $result,
         ];
 
         return view('hello.index', $data);
