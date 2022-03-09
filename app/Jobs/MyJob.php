@@ -8,19 +8,22 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use App\Models\Person;
 
 class MyJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    protected $person;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Person $person)
     {
-        //
+        $this->person = $person;
     }
 
     /**
@@ -30,6 +33,13 @@ class MyJob implements ShouldQueue
      */
     public function handle()
     {
-        echo '<p class="myjob">THIS IS MYJOB!</p>';
+        $sufix = '[+MY JOB]';
+        if (strpos($this->person->name, $sufix)) {
+            $this->person->name = str_replace($sufix, '', $this->person->name);
+        } else {
+            $this->person->name .= $sufix;
+        }
+
+        $this->person->save();
     }
 }

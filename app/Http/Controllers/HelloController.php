@@ -9,9 +9,11 @@ use App\Models\Person;
 class HelloController extends Controller
 {
 
-    public function index(Request $request)
+    public function index(Person $person = null)
     {
-        MyJob::dispatch();
+        if ($person != null) {
+            MyJob::dispatch($person);
+        }
         $msg = 'show people reord.';
         $result = Person::get();
 
