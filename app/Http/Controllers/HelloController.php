@@ -2,21 +2,38 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PersonEvent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Person;
 
 class HelloController extends Controller
 {
 
-    public function index(Request $request)
+    public function index(Person $person = null)
     {
         $msg = 'show people reord.';
-        $re = Person::get();
-        $fields = Person::get()->fields();
+        $result = Person::get();
 
         $data = [
-            'msg' => implode(', ', $fields),
-            'data' => $re,
+            'input' => '',
+            'msg' => $msg,
+            'data' => $result,
+        ];
+
+        return view('hello.index', $data);
+    }
+
+    public function send(Request $request)
+    {
+        $id = $request->input('id');
+        $person = Person::find($id);
+
+        event(new PersonEvent($person));
+        $data = [
+            'input' => '',
+            'msg' => 'id=' . $id,
+            'data' => [$person],
         ];
 
         return view('hello.index', $data);
