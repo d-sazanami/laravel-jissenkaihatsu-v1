@@ -31,7 +31,7 @@ class Kernel extends ConsoleKernel
         $id = rand(0, $count) + 1;
 
 
-        $schedule->call(new MyJob($id));
+        $schedule->job(new MyJob($id));
     }
 
     /**
