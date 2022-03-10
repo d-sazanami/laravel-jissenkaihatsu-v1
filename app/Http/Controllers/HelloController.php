@@ -12,13 +12,8 @@ class HelloController extends Controller
 
     public function index(Person $person = null)
     {
-        $msg = 'show people reord.';
-        $result = Person::get();
-
         $data = [
-            'input' => '',
-            'msg' => $msg,
-            'data' => $result,
+            'msg' => 'This is Vue.js application.',
         ];
 
         return view('hello.index', $data);

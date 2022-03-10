@@ -2,13 +2,16 @@
 <html>
 <head>
     <title>Index</title>
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
-<body>
+<body style="padding:10px;">
     <h1>Hello/Index</h1>
-    <form action="/hello" method="POST">
-        @csrf
-        ID: <input type="text" id="id" name="id">
-        <input type="submit">
-    </form>
+    <p>{{$msg}}</p>
+
+    <div id="app">
+        <example-component></example-component>
+    </div>
+    <script src="{{ mix('js/app.js') }}"></script>
 </body>
 </html>
