@@ -9,6 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Person;
+use Illuminate\Support\Facades\Storage;
 
 class MyJob implements ShouldQueue
 {
@@ -21,9 +22,9 @@ class MyJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Person $person)
+    public function __construct($id)
     {
-        $this->person = $person;
+        $this->person = Person::find($id)->first();
     }
 
     /**
@@ -33,13 +34,29 @@ class MyJob implements ShouldQueue
      */
     public function handle()
     {
-        $sufix = '[+MY JOB]';
+        $this->doJob();
+    }
+
+    public function getPersonId($id)
+    {
+        return $this->person->id;
+    }
+
+    public function __invoke()
+    {
+        $this->handle();
+    }
+
+    public function doJob()
+    {
+        $sufix = ' [+MY JOB]';
         if (strpos($this->person->name, $sufix)) {
             $this->person->name = str_replace($sufix, '', $this->person->name);
         } else {
             $this->person->name .= $sufix;
         }
-
         $this->person->save();
+
+        Storage::append('person_access_log.txt', $this->person->all_data);
     }
 }
