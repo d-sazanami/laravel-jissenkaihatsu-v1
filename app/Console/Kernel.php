@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Person;
 use App\Jobs\MyJob;
 
@@ -28,11 +29,8 @@ class Kernel extends ConsoleKernel
     {
         $count = Person::all()->count();
         $id = rand(0, $count) + 1;
-        $schedule->call(function() use ($id)
-        {
-            $person = Person::find($id);
-            MyJob::dispatch($person);
-        });
+        $obj = new ScheduleObj($id);
+        $schedule->call($obj);
     }
 
     /**
@@ -45,5 +43,22 @@ class Kernel extends ConsoleKernel
         $this->load(__DIR__.'/Commands');
 
         require base_path('routes/console.php');
+    }
+}
+
+class ScheduleObj
+{
+    private $person;
+
+    public function __construct($id)
+    {
+        $this->person = Person::find($id);
+    }
+
+    public function __invoke()
+    {
+        Storage::append('person_access_log.txt', $this->person->all_data);
+        MyJob::dispatch($this->person);
+        return 'true';
     }
 }
