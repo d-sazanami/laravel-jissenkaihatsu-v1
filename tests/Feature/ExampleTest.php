@@ -14,14 +14,8 @@ class ExampleTest extends TestCase
      */
     public function test_example()
     {
-        $data = [
-            'id' => 1,
-            'name' => 'Reimu Hakurei',
-            'mail' => 'reimu@hakurei.com',
-            'age' => '16'
-        ];
-        $this->assertDatabaseHas('people', $data);
+        $response = $this->get('/');
 
-        $this->assertDatabaseMissing('people', ['id' => 14]);
+        $response->assertStatus(200);
     }
 }
