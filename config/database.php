@@ -94,7 +94,7 @@ return [
         'testing' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
-            'host' => '127.0.0.1',
+            'host' => 'mysql',
             'port' => '3306',
             'database' => 'laravel_app_test',
             'username' => 'sail',
