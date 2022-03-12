@@ -2,11 +2,16 @@
 
 namespace Tests\Feature;
 
+use App\Models\Person;
+use Database\Seeders\PersonSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
+
+    use RefreshDatabase;
+
     /**
      * A basic test example.
      *
@@ -14,29 +19,19 @@ class ExampleTest extends TestCase
      */
     public function test_example()
     {
-        $this->get('/')->assertStatus(200);
+        $response = $this->get('/');
 
-        $this->get('/hello')->assertOK();
-        // $this->post('/hello')->assertOK();
-        // $this->get('/hello/1')->assertOK();
-        $this->get('/hoge')->assertStatus(404);
+        $response->assertStatus(200);
+    }
 
-        $this->get('/hello')->assertSeeText('Index');
-        //$this->get('/hello')->assertSee('<h1>');
-        // $this->get('/hello')->assertSeeInOrder(['<html', '<head', '<body', '<h1>']);
+    public function testBasicTest()
+    {
+        $this->seed(PersonSeeder::class);
+        $person = Person::find(1);
+        $data = $person->toArray();
+        $this->assertDatabaseHas('people', $data);
 
-        //$this->get('/hello/json/1')->assertSeeText('博麗霊夢');
-        /*
-        $this->get('/hello/json/2')->assertExactJson(
-            [
-                'id'=> 2,
-                'name' => '霧雨魔理沙',
-                'mail' => 'marisa@kirisame.jp',
-                'created_at' => null,
-                'updated_at' => null,
-                'age' => '16'
-            ]
-        );
-        */
+        $person->delete();
+        $this->assertDatabaseMissing('people', $data);
     }
 }
