@@ -3,11 +3,15 @@
 namespace Tests\Feature;
 
 use App\Models\Person;
+use Database\Seeders\PersonSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
+
+    use RefreshDatabase;
+
     /**
      * A basic test example.
      *
@@ -22,21 +26,9 @@ class ExampleTest extends TestCase
 
     public function testBasicTest()
     {
-        $data = [
-            'id' => 1,
-            'name' => 'DUMMY',
-            'mail' => 'dummy@mail',
-            'age' => 0
-        ];
-        $person = new Person();
-        $person->fill($data)->save();
-        $this->assertDatabaseHas('people', $data);
-
-        $person->name = 'NOT-DUMMY';
-        $person->save();
-        $this->assertDatabaseMissing('people', $data);
-
-        $data['name'] = 'NOT-DUMMY';
+        $this->seed(PersonSeeder::class);
+        $person = Person::find(1);
+        $data = $person->toArray();
         $this->assertDatabaseHas('people', $data);
 
         $person->delete();
