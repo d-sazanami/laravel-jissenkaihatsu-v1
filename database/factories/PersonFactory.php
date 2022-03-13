@@ -19,4 +19,22 @@ class PersonFactory extends Factory
             'age' => $this->faker->numberBetween(1, 100)
         ];
     }
+
+    public function nameUpper()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'name' => strtoupper($attributes['name']),
+            ];
+        });
+    }
+
+    public function nameLower()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'name' => strtolower($attributes['name']),
+            ];
+        });
+    }
 }
