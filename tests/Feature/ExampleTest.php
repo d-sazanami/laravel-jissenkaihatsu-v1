@@ -26,9 +26,12 @@ class ExampleTest extends TestCase
 
     public function testBasicTest()
     {
-        $this->seed(PersonSeeder::class);
-        $person = Person::find(1);
+        $count = 100;
+        $persons = Person::factory()->count($count)->create();
+        
+        $person = Person::find(rand(1, $count));
         $data = $person->toArray();
+        print_r($data);
         $this->assertDatabaseHas('people', $data);
 
         $person->delete();
