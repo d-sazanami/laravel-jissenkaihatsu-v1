@@ -31,11 +31,7 @@ class ExampleTest extends TestCase
         $person = Person::factory()->create();
 
         Event::fake();
-        Event::assertNotDispatched(PersonEvent::class);
-        event(new PersonEvent($person));
+        $this->get('/hello/' . $person->id)->assertOk();
         Event::assertDispatched(PersonEvent::class);
-        Event::assertDispatched(function (PersonEvent $event) use ($person) {
-            return $event->person == $person;
-        });
     }
 }

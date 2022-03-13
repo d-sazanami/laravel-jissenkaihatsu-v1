@@ -10,10 +10,15 @@ use App\Models\Person;
 class HelloController extends Controller
 {
 
-    public function index(Person $person = null)
+    public function index($id = null)
     {
+        if ($id != null) {
+            event(PersonEvent::class);
+            $result = Person::find($id);
+        } else {
+            $result = Person::get();
+        }
         $msg = 'show people reord.';
-        $result = Person::get();
 
         $data = [
             'input' => '',
