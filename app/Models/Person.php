@@ -3,9 +3,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Person extends Model
 {
+    use HasFactory, SerializeDate;
+
     protected $guarded = ['id'];
 
     public static $rules = [
@@ -45,6 +48,7 @@ class Person extends Model
     {
         return $this->name . '(' . $this->age . ')' . '[' . $this->mail . ']';
     }
+
 }
 
 class MyCollection extends Collection
