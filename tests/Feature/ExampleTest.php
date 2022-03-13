@@ -41,6 +41,9 @@ class ExampleTest extends TestCase
         Bus::fake();
         Bus::assertNotDispatched(MyJob::class);
         MyJob::dispatch($id);
-        Bus::assertDispatched(MyJob::class);
+        Bus::assertDispatched(function (Myjob $job) use ($id) {
+            $p = Person::find($id)->first();
+            return $job->getPersonId() == $p->id;
+        });
     }
 }
