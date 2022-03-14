@@ -37,7 +37,7 @@ class MyJob implements ShouldQueue
         $this->doJob();
     }
 
-    public function getPersonId($id)
+    public function getPersonId()
     {
         return $this->person->id;
     }
