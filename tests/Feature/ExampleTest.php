@@ -37,17 +37,8 @@ class ExampleTest extends TestCase
         Queue::fake();
         Queue::assertNothingPushed();
 
-        MyJob::dispatch($person->id);
-        Queue::assertPushed(MyJob::class);
+        MyJob::dispatch($person->id)->onQueue('myjob');
+        Queue::assertPushedOn('myjob', MyJob::class);
 
-        // event(Person::class);
-        $this->get('/hello/' . $person->id)->assertOk();
-        $this->get('/hello/' . $person->id)->assertOk();
-        Queue::assertPushed(CallQueuedListener::class, 2);
-        /*
-        Queue::assertPushed(function ($job) {
-            return $job->class == PersonEventListener::class;
-        });
-        */
     }
 }
