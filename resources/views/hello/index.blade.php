@@ -5,6 +5,7 @@
 </head>
 <body>
     <h1>Hello/Index</h1>
+    <p>{{$msg}}</p>
     <form action="/hello" method="POST">
         @csrf
         ID: <input type="text" id="id" name="id">

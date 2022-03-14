@@ -2,9 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Models\Person;
-use Database\Seeders\PersonSeeder;
+use App\MyClasses\PowerMyservice;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Mockery;
+use Mockery\MockInterface;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
@@ -26,26 +27,25 @@ class ExampleTest extends TestCase
 
     public function testBasicTest()
     {
-        $list = [];
-        for ($i=0; $i < 10; $i++) { 
-            $p1 = Person::factory()->create();
-            $p2 = Person::factory()->nameUpper()->create();
-            $p3 = Person::factory()->nameLower()->create();
-            $p4 = Person::factory()->nameUpper()->nameLower()->create();
-            $list = array_merge($list, [$p1->id, $p2->id, $p3->id, $p4->id]);
-        }
+        $msg = '*** OK ***';
+        $this->instance(
+            PowerMyservice::class,
+            Mockery::mock(PowerMyservice::class, function (MockInterface $mock) use ($msg) {
+                $mock->shouldReceive('setId')
+                    ->withArgs([1])
+                    ->once()
+                    ->andReturn(null);
+                $mock->shouldReceive('say')
+                    ->once()
+                    ->andReturn($msg);
+            })
+        );
 
-        for ($i=0; $i < 10; $i++) { 
-            shuffle($list);
-            $item = array_shift($list);
-            $person = Person::find($item);
-            $data = $person->toArray();
-            print_r($data);
-
-            $this->assertDatabaseHas('people', $data);
-
-            $person->delete();
-            $this->assertDatabaseMissing('people', $data);
-        }
+        $response = $this->get('/hello');
+        $content = $response->getContent();
+        $response->assertSeeText(
+            $msg,
+            $content
+        );
     }
 }

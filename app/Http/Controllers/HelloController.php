@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\PersonEvent;
+use App\MyClasses\PowerMyservice;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use App\Models\Person;
 
 class HelloController extends Controller
 {
 
-    public function index(Person $person = null)
+    public function index(PowerMyservice $service)
     {
-        $msg = 'show people reord.';
+        $service->setId(1);
+        $msg = $service->say();
         $result = Person::get();
 
         $data = [
