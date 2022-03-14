@@ -31,14 +31,12 @@ class ExampleTest extends TestCase
 
     public function testBasicTest()
     {
-        Person::factory()->create();
-        $person = Person::factory()->create();
-
-        Queue::fake();
-        Queue::assertNothingPushed();
-
-        MyJob::dispatch($person->id)->onQueue('myjob');
-        Queue::assertPushedOn('myjob', MyJob::class);
-
+        $response = $this->get('/hello');
+        $content = $response->getContent();
+        echo $content;
+        $response->assertSeeText(
+            'あなたが好きなのは、1番目のリンゴですね',
+            $content
+        );
     }
 }

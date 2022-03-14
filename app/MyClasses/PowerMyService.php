@@ -16,7 +16,7 @@ class PowerMyservice implements MyServiceInterface
     {
         if ($id >= 0 && $id < count($this->data)) {
             $this->id = $id;
-            $this->msg = "あなたが好きなのは、" . $id . '番目' . $this->data[$id] . 'ですね';
+            $this->msg = "あなたが好きなのは、" . $id . '番目の' . $this->data[$id] . 'ですね';
         }
     }
 

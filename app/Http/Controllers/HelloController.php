@@ -2,23 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\PersonEvent;
+use App\MyClasses\PowerMyservice;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use App\Models\Person;
 
 class HelloController extends Controller
 {
 
-    public function index($id = null)
+    public function index(PowerMyservice $service)
     {
-        if ($id != null) {
-            event(PersonEvent::class);
-            $result = Person::find($id);
-        } else {
-            $result = Person::get();
-        }
-        $msg = 'show people reord.';
+        $service->setId(1);
+        $msg = $service->say();
+        $result = Person::get();
 
         $data = [
             'input' => '',
