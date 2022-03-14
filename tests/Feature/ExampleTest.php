@@ -2,14 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Events\PersonEvent;
-use App\Jobs\MyJob;
-use App\Listeners\PersonEventListener;
-use App\Models\Person;
-use Illuminate\Support\Facades\Queue;
-use Illuminate\Events\CallQueuedListener;
+use App\MyClasses\PowerMyservice;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Event;
+use Mockery;
+use Mockery\MockInterface;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
@@ -31,11 +27,24 @@ class ExampleTest extends TestCase
 
     public function testBasicTest()
     {
+        $msg = '*** OK ***';
+        $this->instance(
+            PowerMyservice::class,
+            Mockery::mock(PowerMyservice::class, function (MockInterface $mock) use ($msg) {
+                $mock->shouldReceive('setId')
+                    ->withArgs([1])
+                    ->once()
+                    ->andReturn(null);
+                $mock->shouldReceive('say')
+                    ->once()
+                    ->andReturn($msg);
+            })
+        );
+
         $response = $this->get('/hello');
         $content = $response->getContent();
-        echo $content;
         $response->assertSeeText(
-            'あなたが好きなのは、1番目のリンゴですね',
+            $msg,
             $content
         );
     }
