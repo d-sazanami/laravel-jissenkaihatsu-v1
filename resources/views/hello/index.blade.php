@@ -3,13 +3,13 @@
 <head>
     <title>Index</title>
 </head>
-<body>
+<body style="padding:10px;">
     <h1>Hello/Index</h1>
     <p>{{$msg}}</p>
-    <form action="/hello" method="POST">
-        @csrf
-        ID: <input type="text" id="id" name="id">
-        <input type="submit">
-    </form>
+    <ul>
+    @foreach ($data as $item)
+       <li>{{$item->all_data}} </li>
+    @endforeach
+    </ul>
 </body>
 </html>
