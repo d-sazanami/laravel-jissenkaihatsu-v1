@@ -5,22 +5,26 @@ namespace App\Http\Controllers;
 use App\MyClasses\PowerMyservice;
 use Illuminate\Http\Request;
 use App\Models\Person;
+use Illuminate\Support\Facades\Artisan;
+use Symfony\Component\Console\Output\BufferedOutput;
 
 class HelloController extends Controller
 {
 
     public function index($id = -1)
     {
-        if ($id > 0) {
-            $msg = 'id = ' . $id;
-            $result = [Person::find($id)];
-        } else {
-            $msg = 'all people data.';
-            $result = Person::get();
-        }
+        $opt = [
+            '--method' => 'get',
+            '--path' => 'hello',
+            '--sort' => 'uri',
+            '--compact' => null
+        ];
+        $output = new BufferedOutput();
+        Artisan::call('route:list', $opt, $output);
+        $msg = $output->fetch();
+
         $data = [
             'msg' => $msg,
-            'data' => $result,
         ];
 
         dump($data);
@@ -67,6 +71,14 @@ class HelloController extends Controller
         } else {
             return Person::find($id)->toJson();
         }
+    }
+
+    public function clear()
+    {
+        Artisan::call('cache:clear');
+        Artisan::call('event:clear');
+
+        return redirect()->route('hello');
     }
 
 }
