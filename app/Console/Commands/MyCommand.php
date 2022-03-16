@@ -13,7 +13,7 @@ class MyCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'my:cmd {--id=?} {--name=?}';
+    protected $signature = 'my:cmd {--stone=15} {--max=3}';
 
     /**
      * The console command description.
@@ -39,23 +39,19 @@ class MyCommand extends Command
      */
     public function handle()
     {
-        $id = $this->option('id');
-        $name = $this->option('name');
-        if ($id != '?') {
-            $p = Person::find($id);
-        } else {
-            if ($name != '?') {
-                $p = Person::where('name', $name)->first();
-            } else {
-                $p = null;
-            }
+        $min = (int) $this->ask('min age:');
+        $max = (int) $this->ask('max age:');
+        $headers = ['id', 'name', 'age', 'mail'];
+        $result = Person::select($headers)
+            ->where('age', '>=', $min)
+            ->where('age', '<=', $max)
+            ->orderBy('age')->get();
+        if ($result->count() == 0) {
+            $this->error("can't find Person.");
+            return 0;
         }
-        if ($p != null) {
-            echo "Person id = " . $p->id . ":\n" . $p->all_data;
-        } else {
-            echo 'no Person find...';
-        }
-        echo "\n";
+        $data = $result->toArray();
+        $this->table($headers, $data);
 
         return 0;
     }
