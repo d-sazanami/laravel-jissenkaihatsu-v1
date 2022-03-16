@@ -13,7 +13,7 @@ class MyCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'my:cmd {person?}';
+    protected $signature = 'my:cmd {num?*}';
 
     /**
      * The console command description.
@@ -39,17 +39,13 @@ class MyCommand extends Command
      */
     public function handle()
     {
-        $p = $this->argument('person');
-        if ($p != null) {
-            $person = Person::find($p);
-            if ($person != null) {
-                echo "\nPerson id = " . $p . ":\n";
-                echo $person->all_data . "\n";
-                return 0;
-            }
+        $arr = $this->arguments();
+        $re = 0;
+        foreach ($arr['num'] as $item ) {
+            $re += (int) $item;
         }
 
-        echo "can't get Person...";
+        echo "total:" . $re;
         return 0;
     }
 }
